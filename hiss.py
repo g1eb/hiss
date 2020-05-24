@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import random
 from pynput import keyboard
 
 COMBINATION = {
@@ -8,8 +9,17 @@ COMBINATION = {
 }
 currently_active = set()
 
+VOCAB = [
+    'No!',
+    'Noo!',
+    'Stop!',
+    'Go Away!',
+    'Bad Kitty!',
+]
+
 def hiss():
-    os.system('say -v Daniel No!')
+    phrase = random.choice(VOCAB)
+    os.system('say -v Daniel {}'.format(phrase))
 
 def on_press(key):
     hiss()
