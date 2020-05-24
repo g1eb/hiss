@@ -33,6 +33,7 @@ def on_release(key):
         currently_active.remove(key)
     if key == keyboard.Key.esc and currently_active:
         keyboard_listener.stop()
+        mouse_listener.stop()
 
 keyboard_listener = keyboard.Listener(
     on_press=on_press,
