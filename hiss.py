@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import random
-from pynput import keyboard
+from pynput import keyboard, mouse
 
 COMBINATION = {
     keyboard.Key.cmd,
@@ -17,7 +17,7 @@ VOCAB = [
     'Bad Kitty!',
 ]
 
-def hiss():
+def hiss(*args):
     phrase = random.choice(VOCAB)
     os.system('say -v Daniel {}'.format(phrase))
 
@@ -30,14 +30,24 @@ def on_release(key):
     if key in currently_active:
         currently_active.remove(key)
     if key == keyboard.Key.esc and currently_active:
-        return False
+        keyboard_listener.stop()
+
+keyboard_listener = keyboard.Listener(
+    on_press=on_press,
+    on_release=on_release
+)
+keyboard_listener.start()
+
+mouse_listener = mouse.Listener(
+    on_move=hiss,
+    on_click=hiss,
+    on_scroll=hiss,
+)
+mouse_listener.start()
 
 def main():
-    with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release
-        ) as listener:
-        listener.join()
+    keyboard_listener.join()
+    mouse_listener.join()
 
 if __name__ == '__main__':
     main()
